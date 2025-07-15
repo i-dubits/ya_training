@@ -43,12 +43,25 @@ def _display_aux(root):
     lines = [first_line, second_line] + [a + u * ' ' + b for a, b in zipped_lines]
     return lines, n + m + u, max(p, q) + 2, n + u // 2  
 
-
-
 def display(root):
     '''https://stackoverflow.com/questions/34012886/print-binary-tree-level-by-level-in-python'''
     lines, *_ = _display_aux(root)
     for line in lines:
         print(line)
 
-  
+
+# Print family tree: each parent can have multiple children. Each children has only one parent
+def _print_family_tree(node, prefix: str = "", is_last: bool = True) -> None:
+    """Recursive helper that draws a Unix‑style tree with ├── / └── branches."""
+    branch = "└── " if is_last else "├── "
+    print(prefix + branch + str(node.key))
+
+    # Prefix for this node’s children:
+    new_prefix = prefix + ("    " if is_last else "│   ")
+    last_index = len(node.children) - 1
+    for idx, child in enumerate(node.children):
+        _print_family_tree(child, new_prefix, idx == last_index)
+
+def display_family_tree(root) -> None:
+    """Public helper – just call display(root)."""
+    _print_family_tree(root)
